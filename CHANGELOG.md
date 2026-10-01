@@ -2,6 +2,12 @@
 
 All notable changes to WGRALGO Keys to Wealth™: Rent It or Own It are documented here.
 
+## [1.0.1] — 2026-10-01
+
+- The top app bar is now solid black. Before, it was slightly see-through,
+  so text scrolling underneath showed faintly behind the title.
+- Bumped `versionCode` to 2, `versionName` to "1.0.1"
+
 ## [1.0.0] — 2026-10-01
 
 Initial public release.
