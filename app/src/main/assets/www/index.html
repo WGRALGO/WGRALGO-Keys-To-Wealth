@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; media-src 'none'; object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'none';">
+<meta name="theme-color" content="#000000">
+<title>Keys to Wealth: Rent It or Own It</title>
+<!-- Keys to Wealth™: Rent It or Own It — Android app build.
+     Game: the WGRA website version, wrapped in an app shell.
+     No cookies, no trackers, no outside files, nothing saved on the device. -->
+<style>
+  #wgra-kw {
+    --kw-gold: #d4af37;
+    --kw-gold-soft: #f5e4b3;
+    --kw-gold-bright: #fbe79a;
+    --kw-text: #fdfaf0;
+    --kw-muted: rgba(253,250,240,0.72);
+    --kw-good: #5ad18a;
+    --kw-warn: #f2c14e;
+    --kw-bad: #ff7b7b;
+    --kw-own: #c98500;   /* chart: buy (validated vs #111 surface) */
+    --kw-rent: #3987e5;  /* chart: rent */
+    width: 100%;
+    box-sizing: border-box;
+    background: radial-gradient(circle at top, #181818 0%, #050505 58%);
+    padding: 56px 16px 70px;
+    color: var(--kw-text);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  #wgra-kw *, #wgra-kw *::before, #wgra-kw *::after { box-sizing: border-box; }
+
+  #wgra-kw .kw-inner { max-width: 960px; margin: 0 auto; }
+  #wgra-kw .kw-heading { text-align: center; margin-bottom: 24px; }
+
+  #wgra-kw .kw-kicker {
+    font-size: 13px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(245,228,179,0.9);
+    margin-bottom: 10px;
+  }
+
+  #wgra-kw .kw-title {
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: clamp(24px, 4vw, 34px);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    color: var(--kw-gold-bright);
+    line-height: 1.25;
+  }
+
+  #wgra-kw .kw-sub { font-size: 17px; color: var(--kw-gold-soft); max-width: 700px; margin: 0 auto; }
+
+  #wgra-kw .kw-card {
+    background: radial-gradient(circle at top left, #262018 0%, #111111 55%, #050505 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(212,175,55,0.7);
+    box-shadow: 0 0 18px rgba(212,175,55,0.15), 0 24px 60px rgba(0,0,0,0.85);
+    padding: 26px 22px;
+  }
+
+  #wgra-kw .kw-card + .kw-card { margin-top: 18px; }
+  #wgra-kw .kw-card p { margin: 0 0 12px; }
+
+  #wgra-kw .kw-h3 {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--kw-gold-bright);
+    margin: 0 0 8px;
+  }
+
+  #wgra-kw .kw-step-title {
+    font-size: clamp(20px, 3vw, 24px);
+    font-weight: 800;
+    color: #fff9e4;
+    margin: 4px 0 10px;
+    line-height: 1.3;
+    outline: none;
+  }
+
+  /* ---------- top bar ---------- */
+  #wgra-kw .kw-top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 12px;
+    margin-bottom: 10px;
+  }
+
+  #wgra-kw .kw-pill {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding: 5px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(212,175,55,0.7);
+    background: rgba(5,5,5,0.9);
+    color: var(--kw-gold-soft);
+  }
+
+  #wgra-kw .kw-pill.rent { border-color: var(--kw-rent); }
+  #wgra-kw .kw-pill.buy { border-color: var(--kw-own); }
+  #wgra-kw .kw-stepcount { font-size: 14px; color: var(--kw-muted); }
+
+  #wgra-kw .kw-bar { width: 100%; height: 7px; border-radius: 999px; background: rgba(120,96,32,0.35); overflow: hidden; margin-bottom: 16px; }
+  #wgra-kw .kw-bar-fill { height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #a0731a, #d4af37, #fbe79a); transition: width .25s ease; }
+
+  /* ---------- profile strip ---------- */
+  #wgra-kw .kw-profile {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    font-size: 14px;
+    color: var(--kw-muted);
+    padding: 8px 12px;
+    border-radius: 12px;
+    background: rgba(5,5,5,0.6);
+    border: 1px solid rgba(245,228,179,0.18);
+    margin-bottom: 14px;
+  }
+
+  #wgra-kw .kw-profile strong { color: var(--kw-gold-soft); font-weight: 700; }
+
+  /* ---------- choices ---------- */
+  #wgra-kw .kw-choices { display: grid; gap: 10px; margin: 14px 0 6px; }
+  #wgra-kw .kw-choices.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  #wgra-kw .kw-choices.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  @media (max-width: 720px) {
+    #wgra-kw .kw-choices.cols-3, #wgra-kw .kw-choices.cols-2 { grid-template-columns: 1fr; }
+  }
+
+  #wgra-kw .kw-choice {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.45;
+    white-space: normal;
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--kw-text);
+    background: rgba(5,5,5,0.9);
+    border: 1px solid rgba(245,228,179,0.45);
+    border-radius: 14px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+  }
+
+  #wgra-kw .kw-choice:hover:not(:disabled),
+  #wgra-kw .kw-choice:focus-visible {
+    background: rgba(212,175,55,0.12);
+    border-color: var(--kw-gold-bright);
+    box-shadow: 0 0 12px rgba(212,175,55,0.35);
+    color: var(--kw-text);
+    outline: none;
+  }
+
+  #wgra-kw .kw-choice:disabled { cursor: default; }
+  #wgra-kw .kw-choice.is-locked { opacity: .5; }
+  #wgra-kw .kw-choice.is-picked { opacity: 1; border-width: 2px; }
+  #wgra-kw .kw-choice.is-good { border-color: var(--kw-good); box-shadow: 0 0 0 1px var(--kw-good); opacity: 1; }
+  #wgra-kw .kw-choice.is-bad { border-color: var(--kw-bad); box-shadow: 0 0 0 1px var(--kw-bad); }
+  #wgra-kw .kw-choice.is-off { opacity: .45; cursor: not-allowed; }
+
+  #wgra-kw .kw-choice b { color: var(--kw-gold-bright); }
+  #wgra-kw .kw-choice .kw-c-title { display: block; font-weight: 800; color: #fff9e4; margin-bottom: 2px; }
+  #wgra-kw .kw-choice .kw-c-line { display: block; font-size: 14px; color: var(--kw-muted); }
+  #wgra-kw .kw-choice .kw-c-big { display: block; font-size: 20px; font-weight: 800; color: var(--kw-gold-bright); margin: 4px 0; }
+
+  #wgra-kw .kw-tag {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    padding: 1px 8px;
+    border-radius: 999px;
+    margin-left: 6px;
+    vertical-align: 1px;
+  }
+
+  #wgra-kw .kw-tag.good { background: rgba(90,209,138,.18); color: var(--kw-good); }
+  #wgra-kw .kw-tag.warn { background: rgba(242,193,78,.18); color: var(--kw-warn); }
+  #wgra-kw .kw-tag.bad { background: rgba(255,123,123,.18); color: var(--kw-bad); }
+
+  /* checklist (lease) */
+  #wgra-kw .kw-check {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(245,228,179,0.3);
+    background: rgba(5,5,5,0.85);
+    cursor: pointer;
+  }
+
+  #wgra-kw .kw-check input { width: 22px; height: 22px; margin-top: 2px; accent-color: #d4af37; flex-shrink: 0; }
+  #wgra-kw .kw-check.is-good { border-color: var(--kw-good); }
+  #wgra-kw .kw-check.is-bad { border-color: var(--kw-bad); }
+
+  /* document-style boxes */
+  #wgra-kw .kw-doc {
+    background: #f3eddc;
+    color: #24201a;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 15px;
+  }
+
+  #wgra-kw .kw-doc .kw-doc-head { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: #6d6450; margin-bottom: 6px; }
+  #wgra-kw .kw-doc p { margin: 0 0 6px; }
+
+  #wgra-kw .kw-email { border-radius: 12px; overflow: hidden; border: 1px solid #2c2c2c; margin: 10px 0; }
+  #wgra-kw .kw-email-head { background: #161616; padding: 10px 12px; font-size: 14px; color: #cfc9b8; border-bottom: 1px solid #2c2c2c; }
+  #wgra-kw .kw-email-body { background: #0b0b0b; padding: 12px; font-size: 15px; }
+
+  /* tables / meters */
+  #wgra-kw table.kw-table { width: 100%; border-collapse: collapse; font-size: 15px; margin: 8px 0 12px; color: var(--kw-text); font-family: inherit; }
+  #wgra-kw .kw-table th, #wgra-kw .kw-table td { text-align: left; padding: 6px 8px; border-bottom: 1px solid rgba(245,228,179,0.15); }
+  #wgra-kw .kw-table th { color: var(--kw-gold-soft); font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+  #wgra-kw .kw-table td.num, #wgra-kw .kw-table th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  #wgra-kw .kw-table tr.is-you td { color: var(--kw-gold-bright); font-weight: 700; }
+  #wgra-kw .kw-table tr.total td { font-weight: 800; color: #fff9e4; border-top: 2px solid rgba(245,228,179,0.35); }
+
+  #wgra-kw .kw-meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 10px 0; }
+  @media (max-width: 720px) { #wgra-kw .kw-meters { grid-template-columns: 1fr; } }
+  #wgra-kw .kw-meter { border-radius: 12px; padding: 10px 12px; background: rgba(5,5,5,0.85); border: 1px solid rgba(245,228,179,0.25); }
+  #wgra-kw .kw-meter .kw-m-label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--kw-muted); }
+  #wgra-kw .kw-meter .kw-m-value { font-size: 22px; font-weight: 800; color: #fff9e4; }
+  #wgra-kw .kw-meter .kw-m-note { font-size: 13px; color: var(--kw-muted); }
+
+  /* feedback */
+  #wgra-kw .kw-feedback { margin-top: 12px; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(245,228,179,0.35); background: rgba(212,175,55,0.08); }
+  #wgra-kw .kw-feedback.good { border-color: rgba(90,209,138,.7); background: rgba(90,209,138,.08); }
+  #wgra-kw .kw-feedback.mid { border-color: rgba(242,193,78,.7); background: rgba(242,193,78,.08); }
+  #wgra-kw .kw-feedback.bad { border-color: rgba(255,123,123,.7); background: rgba(255,123,123,.08); }
+  #wgra-kw .kw-fb-head { font-weight: 800; margin-bottom: 4px; }
+  #wgra-kw .kw-feedback.good .kw-fb-head { color: var(--kw-good); }
+  #wgra-kw .kw-feedback.mid .kw-fb-head { color: var(--kw-warn); }
+  #wgra-kw .kw-feedback.bad .kw-fb-head { color: var(--kw-bad); }
+
+  #wgra-kw .kw-hint { margin: 8px 0; font-size: 15px; color: var(--kw-gold-soft); padding: 8px 12px; border-left: 3px solid var(--kw-gold); background: rgba(212,175,55,0.07); border-radius: 0 10px 10px 0; }
+
+  /* buttons */
+  #wgra-kw .kw-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+  #wgra-kw .kw-row.left { justify-content: flex-start; }
+
+  #wgra-kw .kw-btn,
+  #wgra-kw .kw-btn-ghost {
+    font: inherit;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    white-space: normal;
+    border-radius: 999px;
+    padding: 11px 22px;
+    cursor: pointer;
+  }
+
+  #wgra-kw .kw-btn {
+    color: #1b1303;
+    background: linear-gradient(120deg, #ffdf7a, #fbe79a, #d4af37);
+    border: 2px solid rgba(245,210,106,.95);
+    box-shadow: 0 6px 18px rgba(0,0,0,.6);
+  }
+
+  #wgra-kw .kw-btn:hover, #wgra-kw .kw-btn:focus { color: #1b1303; background: linear-gradient(120deg, #ffe58f, #fdeeb0, #ddb944); }
+  #wgra-kw .kw-btn:disabled { opacity: .45; cursor: default; }
+
+  #wgra-kw .kw-btn-ghost { color: var(--kw-gold-soft); background: rgba(12,12,12,.96); border: 1px solid rgba(212,175,55,.75); }
+  #wgra-kw .kw-btn-ghost:hover, #wgra-kw .kw-btn-ghost:focus { color: var(--kw-gold-bright); background: rgba(212,175,55,.12); }
+
+  #wgra-kw .kw-btn:focus-visible, #wgra-kw .kw-btn-ghost:focus-visible, #wgra-kw .kw-term:focus-visible { outline: 3px solid #fff; outline-offset: 2px; }
+
+  /* setup */
+  #wgra-kw .kw-setup-group { margin-bottom: 18px; }
+  #wgra-kw .kw-label { display: block; font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--kw-gold-soft); margin-bottom: 8px; }
+
+  /* glossary term buttons + dialog */
+  #wgra-kw .kw-term {
+    font: inherit;
+    color: var(--kw-gold-bright);
+    background: none;
+    border: none;
+    border-bottom: 1px dashed var(--kw-gold-bright);
+    padding: 0;
+    cursor: help;
+    text-transform: none;
+    letter-spacing: normal;
+    white-space: normal;
+    border-radius: 0;
+  }
+
+  #wgra-kw .kw-term:hover, #wgra-kw .kw-term:focus { background: rgba(212,175,55,.15); color: var(--kw-gold-bright); }
+  #wgra-kw .kw-doc .kw-term { color: #6b4a00; border-bottom-color: #6b4a00; }
+
+  #wgra-kw .kw-gloss-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0,0,0,.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  #wgra-kw .kw-gloss-backdrop.show { display: flex; }
+
+  #wgra-kw .kw-gloss {
+    max-width: 440px;
+    width: 100%;
+    background: #111;
+    border: 1px solid var(--kw-gold);
+    border-radius: 16px;
+    padding: 18px 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.8);
+  }
+
+  #wgra-kw .kw-gloss h4 { margin: 0 0 6px; color: var(--kw-gold-bright); font-size: 18px; }
+  #wgra-kw .kw-gloss p { margin: 0 0 12px; }
+
+  /* results */
+  #wgra-kw .kw-grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 12px 0 18px; }
+  @media (max-width: 720px) { #wgra-kw .kw-grades { grid-template-columns: repeat(2, 1fr); } }
+  #wgra-kw .kw-grade { text-align: center; border-radius: 14px; padding: 12px 8px; background: rgba(5,5,5,.85); border: 1px solid rgba(245,228,179,.3); }
+  #wgra-kw .kw-grade .kw-g-letter { font-family: "Playfair Display", Georgia, serif; font-size: 40px; font-weight: 800; color: var(--kw-gold-bright); line-height: 1.1; }
+  #wgra-kw .kw-grade .kw-g-name { font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--kw-gold-soft); }
+  #wgra-kw .kw-grade .kw-g-pts { font-size: 13px; color: var(--kw-muted); }
+
+  /* chart */
+  #wgra-kw .kw-chart-wrap { position: relative; margin: 8px 0 6px; }
+  #wgra-kw .kw-legend { display: flex; gap: 18px; flex-wrap: wrap; font-size: 14px; color: var(--kw-text); margin-bottom: 6px; }
+  #wgra-kw .kw-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  #wgra-kw .kw-swatch { width: 18px; height: 3px; border-radius: 2px; display: inline-block; }
+  #wgra-kw svg.kw-chart { width: 100%; height: auto; display: block; touch-action: pan-y; }
+  #wgra-kw .kw-chart text { fill: rgba(253,250,240,0.72); font-size: 12px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  #wgra-kw .kw-chart .kw-grid { stroke: rgba(253,250,240,0.10); stroke-width: 1; }
+  #wgra-kw .kw-chart .kw-zero { stroke: rgba(253,250,240,0.35); stroke-width: 1; }
+  #wgra-kw .kw-chart .kw-line { fill: none; stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+  #wgra-kw .kw-chart .kw-cross { stroke: rgba(253,250,240,0.45); stroke-width: 1; }
+  #wgra-kw .kw-chart .kw-even { stroke: rgba(245,228,179,0.6); stroke-width: 1; stroke-dasharray: 4 4; }
+  #wgra-kw .kw-chart .kw-endlabel { fill: #fdfaf0; font-size: 13px; font-weight: 700; }
+  #wgra-kw .kw-tip {
+    position: absolute;
+    pointer-events: none;
+    background: #0b0b0b;
+    border: 1px solid rgba(245,228,179,.5);
+    border-radius: 10px;
+    padding: 8px 10px;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--kw-text);
+    white-space: nowrap;
+    display: none;
+    box-shadow: 0 8px 20px rgba(0,0,0,.6);
+  }
+
+  #wgra-kw .kw-tip .kw-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+
+  #wgra-kw .kw-card ul { margin: 0 0 12px 18px; padding: 0; }
+  #wgra-kw .kw-card li { margin-bottom: 6px; }
+  #wgra-kw .kw-card a { color: var(--kw-gold-bright); }
+  #wgra-kw .kw-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 760px) { #wgra-kw .kw-cols { grid-template-columns: 1fr; } }
+  #wgra-kw .kw-disclaimer { font-size: 13px; color: var(--kw-muted); border-top: 1px dashed rgba(212,175,55,.35); padding-top: 12px; margin-top: 6px; }
+  #wgra-kw .kw-small { font-size: 14px; color: var(--kw-muted); }
+  #wgra-kw .kw-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+
+  /* ================= ANDROID APP SHELL ================= */
+  :root { --bar-h: 56px; --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px); }
+  html, body {
+    margin: 0; padding: 0; min-height: 100%;
+    background: #000;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+  /* Pure black so the logo's black background blends in (no visible box). */
+  #wgra-kw { background: #000; padding: calc(var(--bar-h) + var(--safe-top) + 14px) 12px calc(28px + var(--safe-bottom)); min-height: 100vh; }
+  #wgra-kw .kw-inner { max-width: 820px; }
+  #wgra-kw #kw-app { scroll-margin-top: calc(var(--bar-h) + var(--safe-top) + 10px); }
+  @media (max-width: 560px) { #wgra-kw .kw-card { padding: 20px 16px; border-radius: 18px; } }
+
+  .app-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 30;
+    padding-top: var(--safe-top);
+    background: rgba(0,0,0,0.94);
+    border-bottom: 1px solid rgba(212,175,55,0.25);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .app-bar-row { height: var(--bar-h); max-width: 820px; margin: 0 auto; display: flex; align-items: center; gap: 10px; padding: 0 6px 0 12px; }
+  .app-bar-logo { width: 36px; height: 36px; border-radius: 8px; }
+  .app-bar-title { flex: 1; min-width: 0; font-size: 19px; font-weight: 800; color: #fbe79a; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .icon-btn { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+  .icon-btn:active { background: rgba(255,255,255,0.1); }
+  .icon-btn svg { width: 24px; height: 24px; fill: #fdfaf0; }
+
+  /* Setup hero: big logo, shown only on the setup screen */
+  .app-hero { display: none; text-align: center; margin: 4px 0 18px; }
+  #wgra-kw.is-setup .app-hero { display: block; }
+  .app-hero img { width: min(64vw, 260px); height: min(64vw, 260px); }
+  .app-hero p { margin: 10px auto 0; max-width: 560px; font-size: 16px; line-height: 1.5; color: #f5e4b3; }
+
+  /* Bottom sheets: menu, tips, help, about, privacy, credits */
+  .scrim { position: fixed; inset: 0; z-index: 40; background: rgba(0,0,0,0.6); opacity: 0; pointer-events: none; transition: opacity .25s; }
+  .scrim.open { opacity: 1; pointer-events: auto; }
+  .sheet {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+    max-width: 820px; margin: 0 auto; max-height: 85vh; overflow-y: auto;
+    background: #1a1a1a; border-radius: 24px 24px 0 0; border-top: 1px solid rgba(212,175,55,0.4);
+    padding: 10px 20px calc(24px + var(--safe-bottom));
+    transform: translateY(105%); transition: transform .3s cubic-bezier(.2,.8,.2,1);
+    color: #fdfaf0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .sheet.open { transform: none; }
+  .sheet-handle { width: 36px; height: 4px; border-radius: 2px; background: #555; margin: 0 auto 14px; }
+  .sheet h3 { margin: 0 0 10px; font-size: 21px; color: #fbe79a; }
+  .sheet p, .sheet li { font-size: 15px; line-height: 1.6; color: #e8e4d6; }
+  .sheet ul { padding-left: 20px; margin: 0 0 10px; }
+  .sheet .muted { color: rgba(253,250,240,0.6); font-size: 14px; }
+  .sheet-close {
+    display: block; width: 100%; margin-top: 14px; min-height: 50px; border: 0; border-radius: 14px;
+    background: #2a2a2a; color: #fbe79a; font: inherit; font-size: 16px; font-weight: 800; cursor: pointer;
+  }
+  .menu-item { display: flex; align-items: center; gap: 16px; width: 100%; padding: 14px 6px; border: 0; background: transparent; color: #fdfaf0; font: inherit; font-size: 16px; text-align: left; cursor: pointer; border-radius: 12px; }
+  .menu-item:active { background: rgba(255,255,255,0.06); }
+  .menu-item svg { width: 22px; height: 22px; fill: #d4af37; flex: none; }
+
+  /* Intro splash: the big logo while the app opens */
+  .app-splash { position: fixed; inset: 0; z-index: 100; background: #000; display: flex; align-items: center; justify-content: center; transition: opacity .45s ease; }
+  .app-splash img { width: min(80vw, 80vh, 520px); height: min(80vw, 80vh, 520px); animation: app-splash-in .6s ease both; }
+  .app-splash.out { opacity: 0; pointer-events: none; }
+  @keyframes app-splash-in { from { opacity: 0; transform: scale(.92); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .app-splash, .app-splash img, .sheet, .scrim { animation: none; transition: none; } }
+</style>
+</head>
+<body>
+<div id="app-splash" class="app-splash" aria-hidden="true"><img src="logo.jpg" alt=""></div>
+
+<header class="app-bar">
+  <div class="app-bar-row">
+    <img class="app-bar-logo" src="logo.jpg" alt="">
+    <div class="app-bar-title">Keys to Wealth</div>
+    <button type="button" class="icon-btn" data-sheet="sheet-menu" aria-label="More options"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg></button>
+  </div>
+</header>
+
+<div id="wgra-kw">
+  <div class="kw-inner">
+    <div class="app-hero">
+      <img src="logo.jpg" alt="Keys to Wealth: Rent It or Own It logo">
+      <p>Rent an apartment, buy a home, or try both. Make the real decisions, dodge the traps, and see how your choices add up over 30 years.</p>
+    </div>
+    <div class="kw-card" id="kw-app" aria-live="polite"></div>
+  </div>
+
+  <div class="kw-gloss-backdrop" id="kw-gloss" role="dialog" aria-modal="true" aria-labelledby="kw-gloss-title">
+    <div class="kw-gloss">
+      <h4 id="kw-gloss-title"></h4>
+      <p id="kw-gloss-text"></p>
+      <button type="button" class="kw-btn" id="kw-gloss-close">Got it</button>
+    </div>
+  </div>
+</div>
+
+<div id="scrim" class="scrim"></div>
+
+<div id="sheet-menu" class="sheet" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="sheet-handle"></div>
+  <button type="button" class="menu-item" data-sheet="sheet-tips"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z"/></svg>Tips for teachers</button>
+  <button type="button" class="menu-item" data-sheet="sheet-help"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57a1 1 0 0 0-1.02.24l-2.2 2.2a15.07 15.07 0 0 1-6.59-6.59l2.2-2.21a.96.96 0 0 0 .25-1A11.36 11.36 0 0 1 8.5 4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1 17 17 0 0 0 17 17 1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>Free, trustworthy help</button>
+  <button type="button" class="menu-item" data-sheet="sheet-about"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>About</button>
+  <button type="button" class="menu-item" data-sheet="sheet-privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1 3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>Privacy</button>
+  <button type="button" class="menu-item" data-sheet="sheet-credits"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Credits</button>
+</div>
+
+<div id="sheet-tips" class="sheet" role="dialog" aria-modal="true" aria-label="Tips for teachers">
+  <div class="sheet-handle"></div>
+  <h3>Tips for teachers</h3>
+  <ul>
+    <li><strong>Starter</strong> (ages 14–18) shows hints and walks through the math. <strong>Real World</strong> hides hints and scores the math questions.</li>
+    <li>Try the same character in a low-cost and a high-cost city, then compare the results charts.</li>
+    <li>Tap any <span style="color:#fbe79a;border-bottom:1px dashed #fbe79a">underlined term</span> for a plain-English definition.</li>
+    <li>A full game with both paths takes about 15–20 minutes.</li>
+  </ul>
+  <button type="button" class="sheet-close" data-close>Close</button>
+</div>
+
+<div id="sheet-help" class="sheet" role="dialog" aria-modal="true" aria-label="Free, trustworthy help">
+  <div class="sheet-handle"></div>
+  <h3>Free, trustworthy help</h3>
+  <ul>
+    <li><strong>HUD-approved housing counselors</strong> help with renting, buying, and avoiding foreclosure, for free or low cost: 1-800-569-4287 or hud.gov.</li>
+    <li><strong>Consumer Financial Protection Bureau</strong> home-buying guides and tools: consumerfinance.gov.</li>
+    <li><strong>Tenant rights</strong> differ by state. Check your state attorney general’s website or local legal aid.</li>
+  </ul>
+  <button type="button" class="sheet-close" data-close>Close</button>
+</div>
+
+<div id="sheet-about" class="sheet" role="dialog" aria-modal="true" aria-label="About">
+  <div class="sheet-handle"></div>
+  <h3>About</h3>
+  <p>Keys to Wealth™: Rent It or Own It is a free housing and wealth game from WGRALGO / The Wealth Gap Resolution Algorithm™ Inc. Rent an apartment, buy a home, or try both, then see how your choices add up over 30 years.</p>
+  <p class="muted">For education only — not financial or legal advice. All numbers are examples; real rates, prices, taxes, insurance, and laws vary by place and change over time.</p>
+  <p class="muted">Keys to Wealth v1.0.0</p>
+  <button type="button" class="sheet-close" data-close>Close</button>
+</div>
+
+<div id="sheet-privacy" class="sheet" role="dialog" aria-modal="true" aria-label="Privacy">
+  <div class="sheet-handle"></div>
+  <h3>Privacy</h3>
+  <p>This app works offline and doesn’t save anything on your device. It does not collect personal data.</p>
+  <ul>
+    <li>No ads</li>
+    <li>No account</li>
+    <li>No analytics, cookies, or trackers</li>
+    <li>No internet permission</li>
+  </ul>
+  <button type="button" class="sheet-close" data-close>Close</button>
+</div>
+
+<div id="sheet-credits" class="sheet" role="dialog" aria-modal="true" aria-label="Credits">
+  <div class="sheet-handle"></div>
+  <h3>Credits</h3>
+  <ul>
+    <li><strong>WGRALGO</strong> — Project owner, concept, direction, testing, and publishing.</li>
+    <li><strong>ChatGPT</strong> — Original web game assistance.</li>
+    <li><strong>Claude Code</strong> — Android app build, packaging, and GitHub project setup.</li>
+  </ul>
+  <p class="muted">Free and open source under the GNU General Public License v3.0. Made by WGRALGO / The Wealth Gap Resolution Algorithm™ Inc.</p>
+  <button type="button" class="sheet-close" data-close>Close</button>
+</div>
+
+<script>
+(function () {
+  "use strict";
+  var root = document.getElementById("wgra-kw");
+  if (!root || root.getAttribute("data-ready")) return;
+  root.setAttribute("data-ready", "1");
+  var app = document.getElementById("kw-app");
+
+  /* ===================================================================
+     DATA — example numbers for teaching (shown to players as examples)
+     =================================================================== */
+  var PROFILES = {
+    jordan: { name: "Jordan", label: "Jordan, 24 — store manager", income: 48000, savings: 9000, credit: 640, debts: 350, debtNote: "car payment" },
+    maya:   { name: "Maya", label: "Maya, 29 — nurse", income: 72000, savings: 30000, credit: 720, debts: 420, debtNote: "student loan" },
+    duo:    { name: "Chris & Sam", label: "Chris & Sam, 33 — two incomes", income: 105000, savings: 60000, credit: 765, debts: 700, debtNote: "car and student loans" }
+  };
+
+  var CITIES = {
+    // rentRatio: monthly rent for a home like the one bought, as a share of its price
+    low:  { label: "Lower-cost city", rent: 1050, price: 220000, ins: 1300, util: 150, rentRatio: 0.0075 },
+    mid:  { label: "Mid-cost city", rent: 1450, price: 340000, ins: 1600, util: 170, rentRatio: 0.0058 },
+    high: { label: "High-cost city", rent: 2300, price: 640000, ins: 2200, util: 190, rentRatio: 0.0045 }
+  };
+
+  var LISTINGS = [
+    { id: "L1", name: "Garden 1-bedroom", mult: 0.85, util: 0, fee: 0, commute: 70, notes: "Older building, laundry on site. Bus pass to work: $70/month." },
+    { id: "L2", name: "Downtown 1-bedroom", mult: 1.0, util: 10, fee: 40, commute: 0, notes: "Walk to work. Gym and doorman — plus a $40/month “amenity fee” in the fine print." },
+    { id: "L3", name: "Brand-new 2-bedroom", mult: 1.35, util: 30, fee: 0, commute: 120, notes: "City views and a dishwasher. Parking adds $120/month." }
+  ];
+
+  var HOUSES = [
+    { id: "H1", name: "Condo near the train", mult: 0.8, hoa: 320, commute: 0, notes: "Low upkeep. The HOA fee covers the building, roof, and outdoor areas.", problem: "the building’s main plumbing line needs replacing — your share is" },
+    { id: "H2", name: "Townhouse", mult: 1.0, hoa: 150, commute: 60, notes: "Small yard, shared walls. Short drive to work.", problem: "the roof is near the end of its life and needs replacing — about" },
+    { id: "H3", name: "Single-family house", mult: 1.2, hoa: 0, commute: 150, notes: "Big yard and no HOA, but a long commute and more maintenance.", problem: "the roof is near the end of its life and needs replacing — about" }
+  ];
+
+  var GLOSSARY = {
+    dti: ["Debt-to-income ratio (DTI)", "Your monthly debt payments (including the new housing payment) divided by your monthly income before taxes. Many lenders like it at or below about 36%; some allow more."],
+    pmi: ["PMI (private mortgage insurance)", "Extra insurance you pay on a conventional loan when your down payment is under 20%. It protects the lender, not you. It can be removed once you owe less than 80% of the home’s original value, and it ends automatically at 78%."],
+    mip: ["MIP (FHA mortgage insurance)", "Mortgage insurance on FHA loans: an upfront fee (usually added to the loan) plus a yearly charge. With less than 10% down, it lasts for the life of the loan unless you refinance."],
+    escrow: ["Escrow account", "An account your lender uses to pay your property taxes and homeowners insurance. Part of each monthly payment goes into it, so the payment can change when taxes or insurance change."],
+    equity: ["Equity", "The part of the home you actually own: the home’s value minus what you still owe on the mortgage."],
+    closing: ["Closing costs", "Fees paid when you finalize a home purchase — lender fees, title insurance, appraisal, recording fees, and prepaid taxes and insurance. Often about 2–5% of the price."],
+    preapproval: ["Preapproval", "A lender’s written estimate of how much it may lend you, based on a check of your income, debts, savings, and credit. Sellers take preapproved buyers more seriously."],
+    fha: ["FHA loan", "A mortgage insured by the Federal Housing Administration. It allows down payments as low as 3.5% and lower credit scores, but it has mortgage insurance (MIP)."],
+    conventional: ["Conventional loan", "A mortgage that isn’t insured by the government. It usually needs a higher credit score than FHA. With less than 20% down you pay PMI, which goes away once you have enough equity."],
+    hoa: ["HOA fee", "A monthly fee to a homeowners association for shared things like the building, roof, landscaping, or pool. It’s part of your housing cost even though it’s not paid to the lender."],
+    inspection: ["Home inspection", "A professional check of the home’s condition — roof, plumbing, electrical, heating — before you buy. The results let you negotiate repairs, ask for a credit, or walk away."],
+    refinance: ["Refinance", "Replacing your mortgage with a new one, usually to get a lower rate. It has closing costs, so it pays off only if you keep the new loan long enough."],
+    forbearance: ["Forbearance", "A temporary pause or reduction in mortgage payments that your lender may offer during a hardship. Interest may still build, and the missed amount must be repaid later in some way."],
+    balloon: ["Balloon payment", "A very large payment due at the end of a loan. Loans with low payments now and a huge balloon later can leave borrowers unable to pay."],
+    deposit: ["Security deposit", "Money a landlord holds while you rent, to cover unpaid rent or damage beyond normal wear and tear. Most states set rules and deadlines for returning it."],
+    wear: ["Normal wear and tear", "Ordinary aging from everyday living — faded paint, light scuffs, worn carpet. In most states, landlords can’t take it out of your security deposit."],
+    rate: ["Interest rate", "The yearly cost of borrowing, as a percentage of what you owe. A higher credit score usually gets a lower rate, which can save tens of thousands of dollars over a 30-year loan."],
+    downpay: ["Down payment", "The part of the price you pay upfront in cash. The rest is borrowed with the mortgage."],
+    dpa: ["Down payment assistance", "Grants or low-cost loans from state and local programs that help first-time buyers with the down payment or closing costs. Rules and income limits vary."]
+  };
+
+  /* ===================================================================
+     HELPERS
+     =================================================================== */
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+  function money(n) { var neg = n < 0; n = Math.round(Math.abs(n)); return (neg ? "−$" : "$") + n.toLocaleString("en-US"); }
+  function pct(x, d) { return (x * 100).toFixed(d || 0) + "%"; }
+  function term(key, text) { return '<button type="button" class="kw-term" data-term="' + key + '">' + esc(text || GLOSSARY[key][0]) + "</button>"; }
+  function shuffle(a) { var b = a.slice(); for (var i = b.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = b[i]; b[i] = b[j]; b[j] = t; } return b; }
+  function payment(loan, ratePct, years) {
+    var r = ratePct / 100 / 12, n = (years || 30) * 12;
+    return r === 0 ? loan / n : loan * r / (1 - Math.pow(1 + r, -n));
+  }
+  function balanceAfter(loan, ratePct, months) {
+    var r = ratePct / 100 / 12, p = payment(loan, ratePct, 30);
+    return loan * Math.pow(1 + r, months) - p * (Math.pow(1 + r, months) - 1) / r;
+  }
+  function rateFor(credit, type) {
+    var base = credit >= 760 ? 6.25 : credit >= 700 ? 6.5 : credit >= 660 ? 6.9 : credit >= 620 ? 7.4 : 7.9;
+    return type === "fha" ? Math.max(6.0, base - 0.25) : base;
+  }
+  function pmiRate(credit) { return credit >= 760 ? 0.005 : credit >= 700 ? 0.007 : credit >= 660 ? 0.009 : 0.011; }
+
+  /* Full monthly cost of owning a house with given down payment and loan type. */
+  function ownCost(house, downPct, type) {
+    var s = S, c = CITIES[s.city];
+    var price = house.price, down = price * downPct;
+    var base = price - down;
+    var loan = type === "fha" ? base * 1.0175 : base;          // FHA upfront MIP is financed
+    var rate = rateFor(s.credit, type);
+    var pi = payment(loan, rate);
+    var tax = price * 0.011 / 12;
+    var ins = c.ins / 12;
+    var mi = 0;
+    if (type === "fha") mi = base * 0.0055 / 12;
+    else if (downPct < 0.2) mi = base * pmiRate(s.credit) / 12;
+    var total = pi + tax + ins + mi + house.hoa;
+    var closing = price * 0.03;
+    return { price: price, down: down, loan: loan, rate: rate, pi: pi, tax: tax, ins: ins, mi: mi, hoa: house.hoa, total: total,
+             closing: closing, cash: down + closing, type: type, downPct: downPct };
+  }
+
+  function gross() { return S.income / 12; }
+
+  /* ===================================================================
+     STATE
+     =================================================================== */
+  var setup = { level: "starter", profile: "maya", city: "mid", path: "both" };
+  var S = null;
+
+  function newGame() {
+    var p = PROFILES[setup.profile], c = CITIES[setup.city];
+    S = {
+      level: setup.level, profileKey: setup.profile, city: setup.city, path: setup.path,
+      name: p.name, income: p.income, savings: p.savings, credit: p.credit, debts: p.debts, debtNote: p.debtNote,
+      waited: false,
+      listings: LISTINGS.map(function (l) {
+        var rent = Math.round(c.rent * l.mult / 5) * 5;
+        return { id: l.id, name: l.name, rent: rent, util: c.util + l.util, fee: l.fee, commute: l.commute, notes: l.notes };
+      }),
+      houses: HOUSES.map(function (h) {
+        return { id: h.id, name: h.name, price: Math.round(c.price * h.mult / 1000) * 1000, hoa: h.hoa, commute: h.commute, notes: h.notes, problem: h.problem };
+      }),
+      listing: null, house: null, loanType: null, own: null, sellerCredit: 0,
+      scores: { budget: [0, 0], contract: [0, 0], scam: [0, 0], wealth: [0, 0] },
+      missed: [],
+      refi: false
+    };
+    S.steps = [];
+    if (S.path !== "buy") S.steps = S.steps.concat(RENT_STEPS);
+    if (S.path !== "rent") S.steps = S.steps.concat(BUY_STEPS);
+    S.idx = 0;
+    S.steps.forEach(function (st) { st._done = false; });
+  }
+
+  function record(cat, pts, max, missedText) {
+    S.scores[cat][0] += pts;
+    S.scores[cat][1] += max;
+    if (pts < max && missedText) S.missed.push(missedText);
+  }
+
+  /* ===================================================================
+     STEPS
+     Each step: { path, title, render() -> html, choices?: [], answer(value) -> feedback }
+     Feedback: { level: "good"|"mid"|"bad", head, text, cat, pts, max, missed }
+     =================================================================== */
+  function rentBudget(l) { return l.rent + l.util + l.fee; }
+
+  var RENT_STEPS = [
+    { path: "rent", title: "Pick an apartment",
+      render: function () {
+        return "<p>A common guideline is to keep rent plus utilities near <b>30%</b> of your income before taxes. " +
+          "For " + esc(S.name) + ", that’s about <b>" + money(gross() * 0.3) + "</b> a month.</p>" +
+          hint("Add rent + utilities + required fees, then divide by monthly income (" + money(gross()) + "). Don’t forget the cost of getting to work.");
+      },
+      choices: function () {
+        return S.listings.map(function (l) {
+          var share = rentBudget(l) / gross();
+          return { value: l.id, html: '<span class="kw-c-title">' + esc(l.name) + "</span>" +
+            '<span class="kw-c-big">' + money(l.rent) + "/mo</span>" +
+            '<span class="kw-c-line">Utilities about ' + money(l.util) + (l.fee ? " · Fees " + money(l.fee) : "") + "</span>" +
+            '<span class="kw-c-line">' + esc(l.notes) + "</span>" };
+        });
+      },
+      cols: 3,
+      answer: function (id) {
+        var l = S.listings.filter(function (x) { return x.id === id; })[0];
+        S.listing = l;
+        var share = rentBudget(l) / gross();
+        var cheapest = S.listings.every(function (x) { return rentBudget(x) + x.commute >= rentBudget(l) + l.commute; });
+        var line = "Rent, utilities, and fees come to " + money(rentBudget(l)) + " — <b>" + pct(share) + "</b> of income" +
+          (l.commute ? ", plus " + money(l.commute) + " to get to work." : ".");
+        if (share <= 0.3) return fb("good", "Smart pick.", line + " That leaves room for savings and surprises.", "budget", 2, 2);
+        if (cheapest) return fb("mid", "The best of tough options.", line + " Even the cheapest place is over 30% here. A roommate, a lower-cost area, or a raise would help.", "budget", 2, 2);
+        if (share <= 0.35) return fb("mid", "A little tight.", line + " It works, but there’s less room to save. A cheaper place would free up money every month.", "budget", 1, 2, "Keep rent plus utilities near 30% of income.");
+        return fb("bad", "Too expensive for this budget.", line + " At this level, one surprise bill can lead to debt. Look for a cheaper place or a roommate.", "budget", 0, 2, "Keep rent plus utilities near 30% of income.");
+      }
+    },
+
+    { path: "rent", title: "Read the lease: which clauses are traps?", type: "multi",
+      render: function () { return "<p>Check every clause you’d want changed or explained before signing.</p>" + hint("Look for long notice periods, “non-refundable” fees, and repairs shifted onto the tenant."); },
+      items: [
+        { text: "Rent is due on the 1st. A $50 late fee applies after the 5th.", trap: false, why: "Normal — late fees are common, though states may cap them." },
+        { text: "This lease automatically renews for 12 more months unless the tenant gives 90 days’ written notice.", trap: true, why: "Trap — miss a 90-day deadline and you’re locked in for another year." },
+        { text: "Tenant pays a non-refundable “administrative fee” equal to one month’s rent.", trap: true, why: "Trap — a big fee you’ll never get back. Ask what it covers and whether it can be waived." },
+        { text: "Landlord will give at least 24 hours’ notice before entering, except in emergencies.", trap: false, why: "Normal — many states require notice like this." },
+        { text: "Tenant is responsible for all repairs, including plumbing, heating, and appliances.", trap: true, why: "Trap — major repairs are usually the landlord’s job, and some states require it." }
+      ],
+      answerMulti: function (checked) {
+        var right = 0, wrong = 0, traps = 0;
+        this.items.forEach(function (it, i) {
+          if (it.trap) traps++;
+          if (checked[i] && it.trap) right++;
+          if (checked[i] && !it.trap) wrong++;
+        });
+        var pts = (right === traps && wrong === 0) ? 2 : (right >= 2 && wrong <= 1) ? 1 : 0;
+        var lvl = pts === 2 ? "good" : pts === 1 ? "mid" : "bad";
+        return fb(lvl, pts === 2 ? "You caught every trap." : "You found " + right + " of " + traps + " traps" + (wrong ? " and flagged " + wrong + " normal clause" + (wrong > 1 ? "s" : "") : "") + ".",
+          "Read every line before you sign — you can ask to change or remove a clause. Nothing is official until both sides sign.", "contract", pts, 2,
+          "Read the whole lease and ask about auto-renewal, non-refundable fees, and repair duties.");
+      }
+    },
+
+    { path: "rent", title: "Move-in day: how much cash do you need?",
+      render: function () {
+        var l = S.listing;
+        return '<div class="kw-doc"><div class="kw-doc-head">Move-in costs — ' + esc(l.name) + "</div>" +
+          "<p>First month’s rent: " + money(l.rent) + "</p><p>" + term("deposit") + ": equal to one month’s rent</p>" +
+          "<p>Application fee: $50</p><p>Renters insurance, first month: $15</p></div>" +
+          hint("Add them all up: the deposit is in addition to the first month’s rent.");
+      },
+      choices: function () {
+        var r = S.listing.rent, total = r * 2 + 65;
+        this._right = total;
+        return shuffle([total, r + 65, r * 2, r * 3 + 65]).map(function (v) { return { value: v, html: '<span class="kw-c-big">' + money(v) + "</span>" }; });
+      },
+      cols: 2,
+      answer: function (v) {
+        var r = S.listing.rent;
+        if (v === this._right) return fb("good", "Exactly right.", "First month + deposit + fees = " + money(this._right) + ". Many people are surprised it’s about double the rent — save for it ahead of time.", "contract", 2, 2);
+        return fb("bad", "Not quite — it’s " + money(this._right) + ".", "First month (" + money(r) + ") + deposit (" + money(r) + ") + application fee ($50) + insurance ($15). Moving costs about double the monthly rent.", "contract", 0, 2,
+          "Move-in cash is usually first month + security deposit + fees — about double the rent.");
+      }
+    },
+
+    { path: "rent", title: "One of these listings is a scam. Which one?",
+      render: function () { return hint("Real landlords let you see the place and take payment through traceable, official channels."); },
+      choices: function () {
+        var r = S.listing.rent;
+        return [
+          { value: "a", html: '<span class="kw-c-title">“Sunny 1BR — tour this Saturday”</span><span class="kw-c-line">Posted by a property management company. Tour with the leasing agent; apply on the company website; $40 application fee.</span>' },
+          { value: "scam", html: '<span class="kw-c-title">“Beautiful 1BR — " + money(Math.round(r * 0.55)) + "/mo!”</span><span class="kw-c-line">The “owner” only texts. You can’t go inside yet, but a $500 gift card will “hold” it until they return to town.</span>' },
+          { value: "c", html: '<span class="kw-c-title">“Renovated 1BR near the park”</span><span class="kw-c-line">Rent is a bit higher than nearby. Showing on Tuesday; the landlord runs a credit check with your written permission.</span>' }
+        ];
+      },
+      cols: 3,
+      answer: function (v) {
+        if (v === "scam") return fb("good", "You spotted it.", "A too-low price, an owner you can’t meet, no tour, and payment by gift card are classic rental-scam signs. Never pay before you see the inside and sign a lease.", "scam", 2, 2);
+        return fb("bad", "That one looks real.", "The scam was the cheap listing: you couldn’t see inside, the “owner” only texted, and they wanted a gift card. Real landlords don’t take gift cards.", "scam", 0, 2,
+          "Rental scams: too-low prices, no tour, and payment by gift card or app before signing.");
+      }
+    },
+
+    { path: "rent", title: "Lease renewal: your rent is going up 9%",
+      render: function () {
+        var r = S.listing.rent;
+        return '<div class="kw-doc"><div class="kw-doc-head">Renewal notice</div><p>Your new rent will be <b>' + money(r * 1.09) + "</b> (up from " + money(r) +
+          "). Please sign and return within 30 days.</p></div>" + hint("Find out what similar apartments rent for before you answer.");
+      },
+      choices: function () {
+        return [
+          { value: "sign", html: "Sign it right away so you don’t lose the apartment." },
+          { value: "compare", html: "Compare similar listings, then ask the landlord for a smaller increase or a longer lease at today’s price." },
+          { value: "stop", html: "Pay the old rent amount until the landlord changes their mind." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "compare") return fb("good", "Good negotiating.", "Landlords often prefer keeping a reliable tenant over finding a new one. Knowing local prices gives you leverage — and if the increase is fair, you’ll know that too.", "contract", 2, 2);
+        if (v === "sign") return fb("mid", "That works, but you may be overpaying.", "Signing is fine if the price is fair. Checking similar listings first could save you hundreds a year.", "contract", 1, 2, "Check local rents before accepting an increase.");
+        return fb("bad", "Risky move.", "Paying less than the lease requires can lead to late fees or eviction. Negotiate in writing instead.", "contract", 0, 2, "Never short the rent to protest — negotiate in writing.");
+      }
+    },
+
+    { path: "rent", title: "Move-out: the landlord kept $600 of your deposit",
+      render: function () {
+        return "<p>The note says: <em>“$600 for repainting and carpet wear.”</em> You lived there 2 years, left it clean, and took dated photos the day you moved in.</p>" +
+          hint("Look up " + term("wear", "normal wear and tear") + ".");
+      },
+      choices: function () {
+        return [
+          { value: "letter", html: "Send a written request with your move-in and move-out photos, asking for an itemized list and the return of charges for normal wear and tear." },
+          { value: "accept", html: "Let it go — landlords are allowed to keep part of every deposit." },
+          { value: "review", html: "Post an angry review online and wait for them to respond." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "letter") return fb("good", "That’s how you get it back.", "Faded paint and worn carpet after two years are usually normal wear and tear, which most states don’t allow landlords to charge for. Your photos are your proof. If needed, small claims court or local legal aid can help.", "wealth", 2, 2);
+        return fb("bad", "You may be leaving $600 behind.", "In most states landlords must itemize deductions and can’t charge for normal wear and tear. A written request with photos is the strongest first step.", "wealth", 0, 2,
+          "Take move-in photos and challenge deposit charges for normal wear and tear in writing.");
+      }
+    }
+  ];
+
+  function readiness() {
+    var house = S.houses[1];
+    var type = S.credit >= 620 ? "conv" : "fha";
+    var est = ownCost(house, 0.10, type);
+    var dti = (S.debts + est.total) / gross();
+    var need = est.cash + est.total * 3;
+    return { est: est, dti: dti, need: need };
+  }
+
+  var BUY_STEPS = [
+    { path: "buy", title: "Are you ready to buy? Start with the math",
+      render: function () {
+        var r = readiness();
+        var body = "<p>Lenders look at your " + term("dti", "debt-to-income ratio (DTI)") + ". Here’s an estimate for the " + esc(S.houses[1].name.toLowerCase()) + " (" + money(r.est.price) + ") with 10% down:</p>" +
+          '<table class="kw-table"><tr><td>Monthly income before taxes</td><td class="num">' + money(gross()) + "</td></tr>" +
+          "<tr><td>Current debts (" + esc(S.debtNote) + ")</td><td class=\"num\">" + money(S.debts) + "</td></tr>" +
+          "<tr><td>Estimated monthly housing cost</td><td class=\"num\">" + money(r.est.total) + "</td></tr></table>";
+        if (S.level === "starter") {
+          body += '<div class="kw-hint"><b>Worked example:</b> (' + money(S.debts) + " + " + money(r.est.total) + ") ÷ " + money(gross()) + " = <b>" + pct(r.dti) +
+            "</b>. Many lenders like this at or below about 36%; some allow up to about 43–50% with strong credit or savings.</div>";
+        } else {
+          body += "<p><b>What is " + esc(S.name) + "’s debt-to-income ratio with this home?</b></p>";
+        }
+        return body;
+      },
+      info: function () { return S.level === "starter"; },
+      choices: function () {
+        var r = readiness();
+        var right = Math.round(r.dti * 100);
+        this._right = right;
+        var opts = [right, Math.round(r.est.total / gross() * 100), Math.round(S.debts / gross() * 100), Math.round((S.debts + r.est.total) / (gross() * 0.78) * 100)];
+        var seen = {}, out = [];
+        opts.forEach(function (v) { if (!seen[v]) { seen[v] = 1; out.push(v); } });
+        while (out.length < 4) { var x = right + out.length * 7; if (!seen[x]) { seen[x] = 1; out.push(x); } }
+        return shuffle(out).map(function (v) { return { value: v, html: '<span class="kw-c-big">' + v + "%</span>" }; });
+      },
+      cols: 2,
+      answer: function (v) {
+        var r = readiness();
+        if (v === this._right) return fb("good", "Correct: " + this._right + "%.", "Debt-to-income includes all monthly debts plus the new housing payment, divided by income before taxes.", "budget", 2, 2);
+        return fb("bad", "It’s " + this._right + "%.", "(" + money(S.debts) + " debts + " + money(r.est.total) + " housing) ÷ " + money(gross()) + " income before taxes. Include every monthly debt plus the new payment.", "budget", 0, 2,
+          "Debt-to-income = all monthly debts + new housing payment, divided by income before taxes.");
+      }
+    },
+
+    { path: "buy", title: "Buy now, or wait a year?",
+      render: function () {
+        var r = readiness();
+        var cTag = S.credit >= 700 ? tag("good", "Strong") : S.credit >= 620 ? tag("warn", "OK") : tag("bad", "Low");
+        var sTag = S.savings >= r.need ? tag("good", "Enough") : S.savings >= r.est.cash ? tag("warn", "No cushion") : tag("bad", "Short");
+        var dTag = r.dti <= 0.36 ? tag("good", "Healthy") : r.dti <= 0.43 ? tag("warn", "Stretched") : tag("bad", "Too high");
+        this._problems = (S.credit < 620 ? 1 : 0) + (S.savings < r.need ? 1 : 0) + (r.dti > 0.43 ? 1 : 0) + (r.dti > 0.36 && r.dti <= 0.43 ? 0.5 : 0) + (S.credit < 700 && S.credit >= 620 ? 0.5 : 0);
+        return '<div class="kw-meters">' +
+          meter("Credit score", S.credit + " " + cTag, "700+ usually means better rates") +
+          meter("Savings", money(S.savings) + " " + sTag, "About " + money(r.need) + " for 10% down, closing costs, and 3 months of payments") +
+          meter("Debt-to-income", pct(r.dti) + " " + dTag, "About 36% or less is the common target") + "</div>" +
+          hint("Two or more yellow or red meters usually means waiting and preparing is the smarter move.");
+      },
+      choices: function () {
+        return [
+          { value: "now", html: '<span class="kw-c-title">Start house hunting now</span><span class="kw-c-line">Get preapproved and start shopping.</span>' },
+          { value: "wait", html: '<span class="kw-c-title">Wait a year and prepare</span><span class="kw-c-line">Pay down debt, save more, and build credit first.</span>' }
+        ];
+      },
+      cols: 2,
+      answer: function (v) {
+        var p = this._problems, res;
+        if (v === "wait") {
+          S.waited = true;
+          var add = Math.round(gross() * 0.08 * 12 / 100) * 100;
+          S.savings += add;
+          S.credit = Math.min(790, S.credit + 30);
+          S.debts = Math.max(0, S.debts - 100);
+          var extra = " One year later: savings up " + money(add) + " to " + money(S.savings) + ", credit score up to " + S.credit + ", and monthly debts down to " + money(S.debts) + ". Now let’s shop.";
+          if (p >= 1.5) res = fb("good", "Smart patience.", "With several warning signs, preparing first protects you." + extra, "wealth", 2, 2);
+          else res = fb("mid", "Safe, but you may not have needed to wait.", "Your numbers were mostly healthy. Waiting still helps, but prices and rates can change too." + extra, "wealth", 1, 2);
+        } else {
+          if (p >= 1.5) res = fb("bad", "Risky timing.", "With these warning signs, a home could strain your budget and leave no cushion for repairs. In this game you’ll keep going so you can see the whole process.", "wealth", 0, 2, "Buy when your credit, savings, and debt-to-income are ready — waiting a year can save a lot.");
+          else if (p >= 1) res = fb("mid", "Possible, but tight.", "You can qualify, but one area needs care. Keep your budget conservative as you shop.", "wealth", 1, 2, "Check credit, savings, and debt-to-income before you shop.");
+          else res = fb("good", "You’re ready.", "Good credit, enough savings, and healthy debt-to-income. Time to get preapproved.", "wealth", 2, 2);
+        }
+        return res;
+      }
+    },
+
+    { path: "buy", title: "Get preapproved: choose a loan type",
+      render: function () {
+        var tiers = [[760, "760+"], [700, "700–759"], [660, "660–699"], [620, "620–659"]];
+        var h = S.houses[1];
+        var lo = payment(h.price * 0.9, rateFor(620, "conv")), hi = payment(h.price * 0.9, rateFor(760, "conv"));
+        var rows = tiers.map(function (t, i) {
+          var next = i === 0 ? 900 : tiers[i - 1][0];
+          var you = S.credit >= t[0] && S.credit < next;
+          return '<tr class="' + (you ? "is-you" : "") + '"><td>' + t[1] + (you ? " ← you" : "") + '</td><td class="num">' + rateFor(t[0], "conv").toFixed(2) + '%</td><td class="num">' + rateFor(t[0], "fha").toFixed(2) + "%</td></tr>";
+        }).join("");
+        return "<p>A " + term("preapproval", "preapproval") + " shows sellers you can borrow. Your credit score sets your " + term("rate", "interest rate") + " (example rates):</p>" +
+          '<table class="kw-table"><tr><th>Credit score</th><th class="num">Conventional</th><th class="num">FHA</th></tr>' + rows + "</table>" +
+          '<p class="kw-small">On a ' + money(h.price * 0.9) + " loan, a 620 score pays about <b>" + money(lo - hi) + " more per month</b> than a 760 score — about " + money((lo - hi) * 360) + " over 30 years.</p>" +
+          "<p>" + term("conventional", "Conventional") + " loans add " + term("pmi") + " under 20% down, which goes away later. " + term("fha", "FHA") + " loans allow 3.5% down and lower scores, but add " + term("mip") +
+          ". VA loans (eligible veterans and service members) and USDA loans (eligible rural areas) can need 0% down — " + esc(S.name) + " doesn’t qualify for those.</p>";
+      },
+      choices: function () {
+        var conv = S.credit >= 620;
+        return [
+          { value: "conv", disabled: !conv, html: '<span class="kw-c-title">Conventional loan</span><span class="kw-c-line">' + (conv ? "Rate " + rateFor(S.credit, "conv").toFixed(2) + "% · PMI ends with enough equity" : "Needs a 620+ credit score") + "</span>" },
+          { value: "fha", html: '<span class="kw-c-title">FHA loan</span><span class="kw-c-line">Rate ' + rateFor(S.credit, "fha").toFixed(2) + "% · 3.5% down · MIP for the life of the loan under 10% down</span>" }
+        ];
+      },
+      cols: 2,
+      answer: function (v) {
+        S.loanType = v;
+        if (S.credit >= 700) {
+          if (v === "conv") return fb("good", "Great fit.", "With strong credit, a conventional loan’s PMI is cheaper than FHA’s mortgage insurance and it goes away once you have about 20% equity.", "wealth", 2, 2);
+          return fb("mid", "It works, but it may cost more.", "FHA’s lower rate is tempting, but its mortgage insurance usually lasts the life of the loan. With your credit, conventional is often cheaper over time.", "wealth", 1, 2, "With good credit, compare conventional vs. FHA total costs, including mortgage insurance.");
+        }
+        return fb("good", "Reasonable choice.", v === "fha" ? "FHA helps buyers with fair credit and small down payments. Plan to refinance later if your credit and equity grow." :
+          "Conventional works with your score. Your PMI will cost more until your credit improves or you reach 20% equity.", "wealth", 2, 2);
+      }
+    },
+
+    { path: "buy", title: "Go house hunting",
+      render: function () {
+        return "<p>Estimated monthly costs below assume 10% down with your " + (S.loanType === "fha" ? "FHA" : "conventional") + " loan. A common guideline keeps the full housing payment near <b>28%</b> of income before taxes (" + money(gross() * 0.28) + ").</p>" +
+          hint("Compare the full monthly cost, not just the price — and count the " + term("hoa", "HOA fee") + " and commute.");
+      },
+      choices: function () {
+        return S.houses.map(function (h) {
+          var c = ownCost(h, 0.10, S.loanType);
+          return { value: h.id, html: '<span class="kw-c-title">' + esc(h.name) + '</span><span class="kw-c-big">' + money(h.price) + "</span>" +
+            '<span class="kw-c-line">About ' + money(c.total) + "/mo all-in (" + pct(c.total / gross()) + " of income)</span>" +
+            '<span class="kw-c-line">' + (h.hoa ? "HOA " + money(h.hoa) + "/mo · " : "No HOA · ") + esc(h.notes) + "</span>" };
+        });
+      },
+      cols: 3,
+      answer: function (id) {
+        var h = S.houses.filter(function (x) { return x.id === id; })[0];
+        S.house = h;
+        var c = ownCost(h, 0.10, S.loanType), share = c.total / gross();
+        var cheapest = S.houses.every(function (x) { return ownCost(x, 0.10, S.loanType).total >= c.total; });
+        var line = "About " + money(c.total) + " a month — " + pct(share) + " of income.";
+        if (share <= 0.28) return fb("good", "Comfortable choice.", line + " That leaves room for savings, repairs, and life.", "budget", 2, 2);
+        if (cheapest) return fb("mid", "The most affordable option here.", line + " Even this one is above 28%, so keep the rest of your budget lean.", "budget", 2, 2);
+        if (share <= 0.36) return fb("mid", "Stretching.", line + " A cheaper home would leave more room for repairs and savings.", "budget", 1, 2, "Keep the full housing payment near 28% of income.");
+        return fb("bad", "House-poor risk.", line + " At this level, most of your income goes to the house, leaving little for emergencies.", "budget", 0, 2, "Keep the full housing payment near 28% of income.");
+      }
+    },
+
+    { path: "buy", title: "Choose your down payment",
+      render: function () {
+        return "<p>Price: <b>" + money(S.house.price) + "</b>. Savings: <b>" + money(S.savings) + "</b>. Cash to close = " + term("downpay", "down payment") + " + " + term("closing", "closing costs") +
+          " (about 3%). Keep at least 3 months of payments left over for emergencies.</p>" +
+          hint("A bigger down payment means a smaller loan and less mortgage insurance — but don’t empty your savings to do it.");
+      },
+      choices: function () {
+        var out = [], self = this;
+        this._opts = {};
+        [0.035, 0.10, 0.20].forEach(function (d) {
+          var c = ownCost(S.house, d, S.loanType);
+          var dpa = 0, left = S.savings - c.cash;
+          if (left < 0 && d === 0.035) { dpa = Math.min(15000, -left + 1000); left += dpa; }
+          var ok = left >= 0;
+          self._opts[d] = { c: c, left: left, dpa: dpa };
+          var mi = c.mi > 0 ? (S.loanType === "fha" ? "MIP " : "PMI ") + money(c.mi) : "No mortgage insurance";
+          out.push({ value: d, disabled: !ok, html:
+            '<span class="kw-c-title">' + (d * 100).toFixed(d === 0.035 ? 1 : 0) + "% down — " + money(c.down) + "</span>" +
+            '<span class="kw-c-big">' + money(c.total) + "/mo</span>" +
+            '<span class="kw-c-line">Loan ' + money(c.pi) + " · Taxes " + money(c.tax) + " · Insurance " + money(c.ins) + " · " + mi + (c.hoa ? " · HOA " + money(c.hoa) : "") + "</span>" +
+            '<span class="kw-c-line">' + (ok ? "Savings left: " + money(left) + (dpa ? " (with " + money(dpa) + " in down payment assistance)" : "") : "Not enough savings for this option") + "</span>" });
+        });
+        if (out.every(function (o) { return o.disabled; })) {
+          out.push({ value: "stop", html: '<span class="kw-c-title">This isn’t the right time or place for me to buy</span><span class="kw-c-line">Keep renting, keep saving, and look again later or in a lower-cost area.</span>' });
+        }
+        return out;
+      },
+      cols: 3,
+      answer: function (d) {
+        if (d === "stop") {
+          S.stopBuy = true;
+          return fb("good", "A smart, honest call.", "Even with " + term("dpa", "down payment assistance") + ", " + esc(S.name) + " can’t cover the cash to close here. Knowing when not to buy protects your savings. The results below show how renting a similar home and investing compares.", "budget", 2, 2);
+        }
+        var o = this._opts[d], c = o.c;
+        S.own = c; S.ownLeft = o.left; S.dpa = o.dpa;
+        var share = c.total / gross(), months = o.left / c.total;
+        var line = money(c.total) + "/mo is " + pct(share) + " of income, with " + money(o.left) + " (" + months.toFixed(1) + " months of payments) left in savings." +
+          (o.dpa ? " A " + term("dpa", "down payment assistance") + " program covered " + money(o.dpa) + "." : "");
+        if (share <= 0.30 && months >= 3) return fb("good", "Balanced choice.", line, "budget", 2, 2);
+        if (months < 1) return fb("bad", "No safety net.", line + " One repair could put you in debt. A smaller down payment or a cheaper home would leave a cushion.", "budget", 0, 2, "Keep at least 3 months of housing payments in savings after closing.");
+        if (share <= 0.36 || months >= 3) return fb("mid", "Workable, with trade-offs.", line + (months < 3 ? " Try to keep 3+ months of payments saved." : " The payment is a stretch, so budget carefully."), "budget", 1, 2, "Balance the down payment against monthly cost and emergency savings.");
+        return fb("bad", "Very tight.", line, "budget", 0, 2, "Balance the down payment against monthly cost and emergency savings.");
+      }
+    },
+
+    { path: "buy", title: "The home inspection found a problem",
+      render: function () {
+        return '<div class="kw-doc"><div class="kw-doc-head">' + term("inspection", "Inspection") + " report — " + esc(S.house.name) + "</div><p>Major item: " + esc(S.house.problem) + " <b>$9,000</b>.</p></div>" +
+          "<p>Your offer included an inspection contingency, so you can still negotiate or back out.</p>";
+      },
+      choices: function () {
+        return [
+          { value: "credit", html: "Ask the seller to fix it or give a credit toward the cost." },
+          { value: "walk", html: "Walk away and keep looking for a similar home." },
+          { value: "asis", html: "Buy it as-is and pay for the repair from savings after you move in." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "credit") { S.sellerCredit = 6000; return fb("good", "Good negotiating.", "The seller agrees to a $6,000 credit at closing. Inspections exist so you can negotiate before you’re locked in.", "contract", 2, 2); }
+        if (v === "walk") return fb("good", "A fair call.", "Walking away is always an option with an inspection contingency. You find a similar home a few weeks later at the same price.", "contract", 2, 2);
+        var left = S.ownLeft - 9000;
+        S.ownLeft = left;
+        return fb(left < S.own.total * 2 ? "bad" : "mid", "Expensive way to do it.", "You lose your negotiating power and $9,000 of savings (" + money(Math.max(0, left)) + " left). Always use the inspection to ask for repairs or a credit.", "contract", left < S.own.total * 2 ? 0 : 1, 2,
+          "Use the inspection to negotiate repairs or a credit — or walk away.");
+      }
+    },
+
+    { path: "buy", title: "Closing: how much cash do you bring?",
+      render: function () {
+        var c = S.own;
+        return '<div class="kw-doc"><div class="kw-doc-head">Closing summary</div><p>Down payment: ' + money(c.down) + "</p><p>" + term("closing", "Closing costs") + ": " + money(c.closing) +
+          "</p><p>Seller credit: " + (S.sellerCredit ? "−" + money(S.sellerCredit) : "none") + (S.dpa ? "</p><p>Down payment assistance: −" + money(S.dpa) : "") + "</p></div>" +
+          hint("Down payment + closing costs, minus any credits.");
+      },
+      choices: function () {
+        var c = S.own, right = c.down + c.closing - S.sellerCredit - (S.dpa || 0);
+        this._right = Math.round(right);
+        var opts = [this._right, Math.round(c.down), Math.round(c.down + c.closing + S.sellerCredit), Math.round(c.closing)];
+        var seen = {}, out = [];
+        opts.forEach(function (v) { if (!seen[v]) { seen[v] = 1; out.push(v); } });
+        while (out.length < 4) { var x = this._right + 2500 * out.length; if (!seen[x]) { seen[x] = 1; out.push(x); } }
+        return shuffle(out).map(function (v) { return { value: v, html: '<span class="kw-c-big">' + money(v) + "</span>" }; });
+      },
+      cols: 2,
+      answer: function (v) {
+        if (v === this._right) return fb("good", "Right — " + money(this._right) + ".", "Your lender gives you a Closing Disclosure at least 3 business days before closing, so you can check every number.", "contract", 2, 2);
+        return fb("bad", "It’s " + money(this._right) + ".", "Add the down payment and closing costs, then subtract credits. Compare the lender’s Closing Disclosure to your Loan Estimate.", "contract", 0, 2, "Cash to close = down payment + closing costs − credits.");
+      }
+    },
+
+    { path: "buy", title: "Two days before closing, this email arrives",
+      render: function () {
+        return '<div class="kw-email"><div class="kw-email-head"><b>From:</b> Title Team &lt;closing@secure-titlegroup-docs.com&gt;<br><b>Subject:</b> URGENT: updated wiring instructions</div>' +
+          '<div class="kw-email-body"><p>Our bank account has changed. Please wire your ' + money(S.own.cash - S.sellerCredit - (S.dpa || 0)) +
+          ' to the new account in the attached PDF by tomorrow at noon to avoid delaying your closing.</p></div></div>';
+      },
+      choices: function () {
+        return [
+          { value: "call", html: "Call the title company using the phone number from your original closing paperwork to check." },
+          { value: "reply", html: "Reply to the email and ask them to confirm the new account is real." },
+          { value: "wire", html: "Wire the money today so the closing isn’t delayed." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "call") return fb("good", "You stopped a wire-fraud scam.", "The title company never changed its account — the email was fake. Changed wiring instructions by email is the #1 sign of closing fraud, and wired money is very hard to get back.", "scam", 2, 2);
+        return fb("bad", "That’s how buyers lose their savings.", "Scammers hack or fake real-estate emails. Replying reaches the scammer. Always call the title company at a number you already have before wiring. (In this game, you catch it just in time.)", "scam", 0, 2,
+          "Before wiring money, call the title company at a number you already have.");
+      }
+    },
+
+    { path: "buy", title: "Year 1: the water heater dies",
+      render: function () { return "<p>Replacing it costs <b>$1,400</b>. Homeowners pay for their own repairs — there’s no landlord to call.</p>"; },
+      choices: function () {
+        return [
+          { value: "fund", html: "Pay from your emergency savings." },
+          { value: "card", html: "Put it on a credit card at 24% and pay the minimum." },
+          { value: "wait", html: "Wait a few months and use cold showers for now." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "fund") return fb("good", "That’s what the emergency fund is for.", "Plan on about 1% of your home’s value per year for repairs and maintenance. Refill the fund over the next few months.", "wealth", 2, 2);
+        if (v === "card") return fb("bad", "Expensive.", "Paying only the minimum at 24% could take years and cost hundreds in interest. Keep an emergency fund for home repairs.", "wealth", 0, 2, "Budget about 1% of the home’s value a year for repairs.");
+        return fb("mid", "Delaying repairs can cost more.", "A failing water heater can leak and cause bigger damage. Using savings now is usually cheaper.", "wealth", 1, 2, "Budget about 1% of the home’s value a year for repairs.");
+      }
+    },
+
+    { path: "buy", title: "Year 2: your payment went up $85",
+      render: function () { return "<p>Your interest rate is fixed, but your monthly payment went up by $85. Why?</p>"; },
+      choices: function () {
+        return shuffle([
+          { value: "escrow", html: "Property taxes and insurance went up, so the " + "escrow part of the payment rose." },
+          { value: "rate", html: "The lender raised the interest rate after the first year." },
+          { value: "pmi", html: "PMI increases a little each year until it ends." }
+        ]);
+      },
+      answer: function (v) {
+        if (v === "escrow") return fb("good", "Exactly.", "Your " + term("escrow", "escrow") + " account pays property taxes and insurance. When those rise, so does your payment — even with a fixed rate.", "contract", 2, 2);
+        return fb("bad", "It’s the escrow account.", "A fixed rate doesn’t change, and PMI doesn’t rise each year. Property taxes and insurance are paid through " + term("escrow", "escrow") + ", and they can go up.", "contract", 0, 2,
+          "Escrow (taxes + insurance) can raise your payment even with a fixed rate.");
+      }
+    },
+
+    { path: "buy", title: "Year 3: rates dropped — refinance?",
+      render: function () {
+        var c = S.own;
+        var bal = balanceAfter(c.loan, c.rate, 36);
+        var newRate = Math.max(4.5, c.rate - 1.25);
+        var oldPay = payment(c.loan, c.rate), newPay = payment(bal, newRate, 27);
+        var save = Math.max(1, oldPay - newPay);
+        this._save = save; this._months = Math.ceil(4000 / save);
+        var body = "<p>Rates fell from " + c.rate.toFixed(2) + "% to " + newRate.toFixed(2) + "%. A " + term("refinance", "refinance") + " would cost about <b>$4,000</b> in closing costs and lower your loan payment by about <b>" + money(save) + "/month</b>. You plan to stay at least 5 more years.</p>";
+        if (S.level === "starter") body += '<div class="kw-hint"><b>Worked example:</b> $4,000 ÷ ' + money(save) + " per month ≈ <b>" + this._months + " months</b> to break even. After that, the savings are yours.</div>";
+        else body += "<p><b>About how many months until the refinance pays for itself?</b></p>";
+        return body;
+      },
+      info: function () { return S.level === "starter"; },
+      infoButton: "Refinance",
+      onInfo: function () { S.refi = true; },
+      choices: function () {
+        var m = this._months;
+        var opts = [m, Math.max(1, Math.round(m / 3)), m * 3, Math.round(4000 / (this._save * 12))];
+        var seen = {}, out = [];
+        opts.forEach(function (v) { if (v > 0 && !seen[v]) { seen[v] = 1; out.push(v); } });
+        while (out.length < 4) { var x = m + 6 * out.length; if (!seen[x]) { seen[x] = 1; out.push(x); } }
+        return shuffle(out).map(function (v) { return { value: v, html: '<span class="kw-c-big">' + v + " months</span>" }; });
+      },
+      cols: 2,
+      answer: function (v) {
+        S.refi = true;
+        if (v === this._months) return fb("good", "Right — about " + this._months + " months.", "Since you’re staying 5+ years, refinancing pays off. Divide the closing costs by the monthly savings to find the break-even point.", "wealth", 2, 2);
+        return fb("bad", "It’s about " + this._months + " months.", "$4,000 ÷ " + money(this._save) + " saved per month. If you’ll stay longer than the break-even point, refinancing makes sense.", "wealth", 0, 2,
+          "Refinance break-even = closing costs ÷ monthly savings.");
+      }
+    },
+
+    { path: "buy", title: "Year 4: you lose your job",
+      render: function () { return "<p>You expect to be out of work for about 3 months. Your savings can cover one month of payments.</p>"; },
+      choices: function () {
+        return [
+          { value: "call", html: "Call your lender right away to ask about " + "forbearance or other help, and contact a HUD-approved housing counselor." },
+          { value: "skip", html: "Stop paying for now and deal with it when the letters come." },
+          { value: "payday", html: "Take out payday loans to keep making the payments." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "call") return fb("good", "That protects your home.", "Lenders have more options before you miss payments — like " + term("forbearance", "forbearance") + " or a modified payment plan. HUD-approved counselors help for free or low cost.", "wealth", 2, 2);
+        if (v === "payday") return fb("bad", "A debt trap.", "Payday loans can have APRs of 300% or more. Call your lender first — and a HUD-approved housing counselor.", "wealth", 0, 2, "In a hardship, call your lender early and talk to a HUD-approved counselor.");
+        return fb("bad", "That makes it harder.", "Missed payments hurt your credit and can lead to foreclosure. Lenders have more ways to help if you call before you fall behind.", "wealth", 0, 2, "In a hardship, call your lender early and talk to a HUD-approved counselor.");
+      }
+    },
+
+    { path: "buy", title: "Year 5: an offer in your mailbox",
+      render: function () {
+        return '<div class="kw-doc"><div class="kw-doc-head">Special homeowner offer</div><p><b>CUT YOUR PAYMENT IN HALF!</b> Interest-only payments for 5 years, then the remaining balance is due in one payment.</p>' +
+          "<p>No income check. Get $20,000 cash from your home equity. Offer ends Friday — sign today!</p></div>";
+      },
+      choices: function () {
+        return [
+          { value: "decline", html: "Decline. Compare any loan with a trusted lender or a HUD-approved counselor first." },
+          { value: "sign", html: "Sign — a lower payment and extra cash would help right now." },
+          { value: "later", html: "Sign, and plan to sell the house before the big payment is due." }
+        ];
+      },
+      answer: function (v) {
+        if (v === "decline") return fb("good", "You dodged a predatory loan.", "Interest-only for years, a huge " + term("balloon", "balloon payment") + ", no income check, and “sign today” pressure are classic warning signs. They can cost people their homes.", "scam", 2, 2);
+        return fb("bad", "That’s a predatory loan.", "Interest-only payments don’t build equity, and the " + term("balloon", "balloon payment") + " could force a sale or foreclosure if prices drop. Pressure to sign today is a red flag.", "scam", 0, 2,
+          "Watch for interest-only, balloon payments, no income checks, and “sign today” pressure.");
+      }
+    }
+  ];
+
+  /* ===================================================================
+     UI PIECES
+     =================================================================== */
+  function hint(text) { return (S && S.level === "starter") ? '<div class="kw-hint">💡 ' + text + "</div>" : ""; }
+  function tag(kind, text) { return '<span class="kw-tag ' + kind + '">' + text + "</span>"; }
+  function meter(label, value, note) { return '<div class="kw-meter"><div class="kw-m-label">' + label + '</div><div class="kw-m-value">' + value + '</div><div class="kw-m-note">' + note + "</div></div>"; }
+  function fb(level, head, text, cat, pts, max, missed) { return { level: level, head: head, text: text, cat: cat, pts: pts, max: max, missed: missed }; }
+
+  function profileStrip() {
+    return '<div class="kw-profile"><span><strong>' + esc(S.name) + "</strong></span><span>Income " + money(S.income) + "/yr (" + money(gross()) + "/mo)</span>" +
+      "<span>Savings " + money(S.savings) + "</span><span>Credit " + S.credit + "</span><span>Debts " + money(S.debts) + "/mo</span><span>" + esc(CITIES[S.city].label) + "</span></div>";
+  }
+
+  function focusTitle() {
+    var t = app.querySelector(".kw-step-title");
+    if (t) { t.setAttribute("tabindex", "-1"); t.focus({ preventScroll: true }); }
+    var r = app.getBoundingClientRect();
+    if (r.top < 0 || r.top > window.innerHeight * 0.6) app.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  /* ---------- Setup screen ---------- */
+  function seg(group, items) {
+    return '<div class="kw-choices cols-' + items.length + '" role="group" data-group="' + group + '">' +
+      items.map(function (it) {
+        var on = setup[group] === it[0];
+        return '<button type="button" class="kw-choice' + (on ? " is-good" : "") + '" data-set="' + group + '" data-v="' + it[0] + '" aria-pressed="' + on + '">' +
+          '<span class="kw-c-title">' + it[1] + '</span><span class="kw-c-line">' + it[2] + "</span></button>";
+      }).join("") + "</div>";
+  }
+
+  function renderSetup() {
+    root.classList.add("is-setup");
+    app.innerHTML =
+      '<h3 class="kw-step-title">Set up your game</h3>' +
+      '<div class="kw-setup-group"><span class="kw-label">Level</span>' +
+      seg("level", [["starter", "Starter", "Ages 14–18 · hints and worked math"], ["real", "Real World", "Adults · no hints, math is scored"]]) + "</div>" +
+      '<div class="kw-setup-group"><span class="kw-label">Choose a character</span>' +
+      seg("profile", Object.keys(PROFILES).map(function (k) {
+        var p = PROFILES[k];
+        return [k, esc(p.label), money(p.income) + "/yr · " + money(p.savings) + " saved · credit " + p.credit + " · " + money(p.debts) + "/mo " + esc(p.debtNote)];
+      })) + "</div>" +
+      '<div class="kw-setup-group"><span class="kw-label">Where do they live?</span>' +
+      seg("city", Object.keys(CITIES).map(function (k) {
+        var c = CITIES[k];
+        return [k, c.label, "Typical rent " + money(c.rent) + " · Typical home " + money(c.price)];
+      })) + "</div>" +
+      '<div class="kw-setup-group"><span class="kw-label">Path</span>' +
+      seg("path", [["rent", "Rent", "6 decisions · about 5 minutes"], ["buy", "Buy", "13 decisions · about 12 minutes"], ["both", "Both", "Rent first, then buy · compare at the end"]]) + "</div>" +
+      '<div class="kw-row"><button type="button" class="kw-btn" data-act="start">Start</button></div>';
+  }
+
+  /* ---------- Step screen ---------- */
+  function renderStep() {
+    root.classList.remove("is-setup");
+    var step = S.steps[S.idx];
+    var total = S.steps.length;
+    var isInfo = step.info && step.info();
+    var html =
+      '<div class="kw-top"><span class="kw-pill ' + step.path + '">' + (step.path === "rent" ? "Renting" : "Buying") + "</span>" +
+      '<span class="kw-stepcount">Step ' + (S.idx + 1) + " of " + total + "</span></div>" +
+      '<div class="kw-bar"><div class="kw-bar-fill" style="width:' + (S.idx / total * 100) + '%"></div></div>' +
+      profileStrip() +
+      '<h3 class="kw-step-title">' + esc(step.title) + "</h3>" + step.render();
+
+    if (isInfo) {
+      html += '<div class="kw-row"><button type="button" class="kw-btn" data-act="info">' + esc(step.infoButton || "Got it") + "</button></div>";
+    } else if (step.type === "multi") {
+      html += '<div class="kw-choices">' + step.items.map(function (it, i) {
+        return '<label class="kw-check" data-i="' + i + '"><input type="checkbox" data-i="' + i + '"><span>' + esc(it.text) + "</span></label>";
+      }).join("") + '</div><div class="kw-row"><button type="button" class="kw-btn" data-act="multi">Check my answers</button></div>';
+    } else {
+      var ch = step.choices.call(step);
+      step._shown = ch;
+      html += '<div class="kw-choices' + (step.cols ? " cols-" + step.cols : "") + '">' + ch.map(function (c, i) {
+        return '<button type="button" class="kw-choice' + (c.disabled ? " is-off" : "") + '" data-act="pick" data-i="' + i + '"' + (c.disabled ? " disabled" : "") + ">" + c.html + "</button>";
+      }).join("") + "</div>";
+    }
+    html += '<div id="kw-fb"></div>' +
+      '<div class="kw-row left"><button type="button" class="kw-btn-ghost" data-act="setup">Start over</button></div>';
+    app.innerHTML = html;
+    focusTitle();
+  }
+
+  function showFeedback(f) {
+    record(f.cat, f.pts, f.max, f.missed);
+    var last = S.idx === S.steps.length - 1;
+    document.getElementById("kw-fb").innerHTML =
+      '<div class="kw-feedback ' + f.level + '"><div class="kw-fb-head">' + (f.level === "good" ? "✓ " : f.level === "mid" ? "◐ " : "✗ ") + f.head + "</div><div>" + f.text + "</div></div>" +
+      '<div class="kw-row"><button type="button" class="kw-btn" data-act="next">' + (last ? "See my results" : "Next") + "</button></div>";
+    var nb = app.querySelector('[data-act="next"]');
+    if (nb) nb.focus({ preventScroll: true });
+    var fbEl = document.getElementById("kw-fb");
+    var r = fbEl.getBoundingClientRect();
+    if (r.bottom > window.innerHeight) fbEl.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function pick(i) {
+    var step = S.steps[S.idx];
+    var c = step._shown[i];
+    if (!c || c.disabled || step._done) return;
+    step._done = true;
+    var f = step.answer.call(step, c.value);
+    Array.prototype.forEach.call(app.querySelectorAll('[data-act="pick"]'), function (b, j) {
+      b.disabled = true;
+      b.classList.add(j === i ? "is-picked" : "is-locked");
+      if (j === i) b.classList.add(f.level === "bad" ? "is-bad" : "is-good");
+    });
+    showFeedback(f);
+  }
+
+  function checkMulti() {
+    var step = S.steps[S.idx];
+    if (step._done) return;
+    step._done = true;
+    var boxes = app.querySelectorAll('.kw-check input');
+    var checked = Array.prototype.map.call(boxes, function (b) { return b.checked; });
+    var f = step.answerMulti(checked);
+    step.items.forEach(function (it, i) {
+      var lab = app.querySelector('.kw-check[data-i="' + i + '"]');
+      boxes[i].disabled = true;
+      if (it.trap) lab.classList.add("is-good");
+      else if (checked[i]) lab.classList.add("is-bad");
+      else lab.style.opacity = ".75";
+      lab.querySelector("span").innerHTML += '<br><span class="kw-small">' + esc(it.why) + "</span>";
+    });
+    app.querySelector('[data-act="multi"]').remove();
+    showFeedback(f);
+  }
+
+  function next() {
+    S.steps[S.idx]._done = false;
+    if (S.stopBuy) { renderResults(); return; }
+    if (S.idx < S.steps.length - 1) { S.idx++; renderStep(); }
+    else renderResults();
+  }
+
+  /* ===================================================================
+     RESULTS — net worth comparison over 30 years
+     =================================================================== */
+  function simulate() {
+    // Rent side
+    var l = S.listing || S.listings[1];
+    // Buy side (use the player's home, or a typical townhouse for a rent-only game)
+    var own = S.own;
+    if (!own) {
+      var type = S.credit >= 620 ? "conv" : "fha";
+      var h = S.houses[1], d = 0.20;
+      [0.20, 0.10, 0.035].some(function (x) { d = x; return ownCost(h, x, type).cash <= S.savings; });
+      own = ownCost(h, d, type);
+      own.houseName = h.name;
+    }
+    var upfront = own.cash - (S.sellerCredit || 0) - (S.dpa || 0);
+    var r = 0.05 / 12;              // investment return
+    var g = 0.03;                   // rent, home value, taxes, insurance, HOA growth per year
+    // Compare like with like: renting a home similar to the one bought (+ renters insurance)
+    var likeRent = Math.round(own.price * CITIES[S.city].rentRatio / 10) * 10;
+    var rent = likeRent + 15;
+    var value = own.price;
+    var bal = own.loan;
+    var rm = own.rate / 100 / 12, pi = own.pi;
+    var rentInv = upfront, ownInv = 0;
+    var tax = own.tax, ins = own.ins, hoa = own.hoa;
+    var miOn = own.mi > 0, mi = own.mi;
+    var fhaLife = own.type === "fha" && own.downPct < 0.10;
+    var out = [{ y: 0, rent: rentInv, buy: value * 0.94 - bal }];
+    for (var m = 1; m <= 360; m++) {
+      var interest = bal * rm;
+      bal = Math.max(0, bal - (pi - interest));
+      if (miOn && !fhaLife) {
+        if (own.type === "fha" && m >= 132) miOn = false;
+        if (own.type !== "fha" && bal <= own.price * 0.78) miOn = false;
+      }
+      var maint = value * 0.01 / 12;
+      var ownCostM = (bal > 0 || m <= 360 ? pi : 0) + tax + ins + hoa + maint + (miOn ? mi : 0);
+      var diff = ownCostM - rent;
+      rentInv = rentInv * (1 + r) + (diff > 0 ? diff : 0);
+      ownInv = ownInv * (1 + r) + (diff < 0 ? -diff : 0);
+      if (m % 12 === 0) {
+        value *= 1 + g; rent *= 1 + g; tax *= 1 + g; ins *= 1 + g; hoa *= 1 + g;
+        out.push({ y: m / 12, rent: rentInv, buy: value * 0.94 - bal + ownInv });
+      }
+    }
+    var even = null;
+    for (var i = 1; i < out.length; i++) {
+      if (out[i].buy >= out[i].rent) { var stays = true; for (var k = i; k < out.length; k++) if (out[k].buy < out[k].rent) stays = false; if (stays) { even = out[i].y; break; } }
+    }
+    return { pts: out, even: even, listing: l, own: own, likeRent: likeRent, houseName: own.houseName || (S.house && S.house.name) };
+  }
+
+  function grade(p) { return p >= 0.9 ? "A" : p >= 0.8 ? "B" : p >= 0.7 ? "C" : p >= 0.6 ? "D" : "F"; }
+
+  function chartSvg(sim) {
+    var W = 640, H = 300, L = 70, R = 70, T = 16, B = 34;
+    var pts = sim.pts;
+    var vals = []; pts.forEach(function (p) { vals.push(p.rent, p.buy); });
+    var lo = Math.min(0, Math.min.apply(null, vals)), hi = Math.max.apply(null, vals);
+    var step = Math.pow(10, Math.floor(Math.log10(Math.max(1, hi - lo) / 4)));
+    [1, 2, 2.5, 5, 10].some(function (m) { if ((hi - lo) / (step * m) <= 5) { step *= m; return true; } return false; });
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    function x(y) { return L + (W - L - R) * y / 30; }
+    function yv(v) { return T + (H - T - B) * (1 - (v - lo) / (hi - lo)); }
+    function short(v) { var a = Math.abs(v), s = a >= 1e6 ? (a / 1e6).toFixed(a >= 1e7 ? 0 : 1) + "M" : a >= 1e3 ? Math.round(a / 1e3) + "K" : Math.round(a); return (v < 0 ? "−$" : "$") + s; }
+    var g = "";
+    for (var v = lo; v <= hi + 1; v += step) g += '<line class="' + (v === 0 ? "kw-zero" : "kw-grid") + '" x1="' + L + '" x2="' + (W - R) + '" y1="' + yv(v) + '" y2="' + yv(v) + '"/><text x="' + (L - 8) + '" y="' + (yv(v) + 4) + '" text-anchor="end">' + short(v) + "</text>";
+    [0, 5, 10, 15, 20, 25, 30].forEach(function (y) { g += '<text x="' + x(y) + '" y="' + (H - 10) + '" text-anchor="middle">' + (y === 0 ? "Start" : "Yr " + y) + "</text>"; });
+    function path(key) { return pts.map(function (p, i) { return (i ? "L" : "M") + x(p.y).toFixed(1) + " " + yv(p[key]).toFixed(1); }).join(" "); }
+    if (sim.even !== null) g += '<line class="kw-even" x1="' + x(sim.even) + '" x2="' + x(sim.even) + '" y1="' + T + '" y2="' + (H - B) + '"/><text x="' + (x(sim.even) + 4) + '" y="' + (T + 10) + '">Break-even: year ' + sim.even + "</text>";
+    var last = pts[pts.length - 1];
+    var yb = yv(last.buy), yr = yv(last.rent);
+    if (Math.abs(yb - yr) < 16) { if (yb < yr) { yb -= 8; yr += 8; } else { yb += 8; yr -= 8; } }
+    g += '<path class="kw-line" d="' + path("rent") + '" stroke="var(--kw-rent)"/><path class="kw-line" d="' + path("buy") + '" stroke="var(--kw-own)"/>';
+    g += '<text class="kw-endlabel" x="' + (W - R + 8) + '" y="' + (yb + 4) + '">Buy</text><text class="kw-endlabel" x="' + (W - R + 8) + '" y="' + (yr + 4) + '">Rent</text>';
+    g += '<line class="kw-cross" id="kw-cross" y1="' + T + '" y2="' + (H - B) + '" x1="-10" x2="-10"/>';
+    g += '<circle id="kw-dot-b" r="4" fill="var(--kw-own)" stroke="#111" stroke-width="2" cx="-10" cy="-10"/><circle id="kw-dot-r" r="4" fill="var(--kw-rent)" stroke="#111" stroke-width="2" cx="-10" cy="-10"/>';
+    g += '<rect id="kw-hit" x="' + L + '" y="' + T + '" width="' + (W - L - R) + '" height="' + (H - T - B) + '" fill="transparent"/>';
+    return { svg: '<svg class="kw-chart" viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Net worth over 30 years, renting versus buying">' + g + "</svg>", x: x, yv: yv, L: L, R: R, W: W };
+  }
+
+  function renderResults() {
+    root.classList.remove("is-setup");
+    var sim = simulate();
+    var cats = [["budget", "Housing Budget"], ["contract", "Contract Smarts"], ["scam", "Scam Defense"], ["wealth", "Long-Term Wealth"]];
+    var grades = cats.map(function (c) {
+      var s = S.scores[c[0]];
+      var letter = s[1] ? grade(s[0] / s[1]) : "—";
+      return '<div class="kw-grade"><div class="kw-g-letter">' + letter + '</div><div class="kw-g-name">' + c[1] + '</div><div class="kw-g-pts">' + (s[1] ? s[0] + " / " + s[1] + " pts" : "not played") + "</div></div>";
+    }).join("");
+    var tot = 0, max = 0; cats.forEach(function (c) { tot += S.scores[c[0]][0]; max += S.scores[c[0]][1]; });
+    var ch = chartSvg(sim);
+    var at = function (y) { return sim.pts[y]; };
+    var rows = [5, 10, 30].map(function (y) {
+      var p = at(y), lead = p.buy >= p.rent ? "Buying" : "Renting";
+      return "<tr><td>Year " + y + '</td><td class="num">' + money(p.rent) + '</td><td class="num">' + money(p.buy) + "</td><td>" + lead + " by " + money(Math.abs(p.buy - p.rent)) + "</td></tr>";
+    }).join("");
+    var evenText = sim.even === null ? "In this example, renting and investing the difference stays ahead for all 30 years."
+      : sim.even <= 1 ? "In this example, buying pulls ahead almost right away."
+      : "In this example, buying pulls ahead in <b>year " + sim.even + "</b>. Sell before then, and renting would have come out ahead.";
+    var lessons = S.missed.length ? "<div class=\"kw-h3\" style=\"margin-top:18px\">Lessons to remember</div><ul>" + S.missed.map(function (m) { return "<li>" + esc(m) + "</li>"; }).join("") + "</ul>" : "";
+    var compareNote = ": buying the " + esc(sim.houseName.toLowerCase()) + " (" + money(sim.own.price) + ") vs. renting a similar home (about " + money(sim.likeRent) + "/mo)";
+
+    app.innerHTML =
+      '<h3 class="kw-step-title">Your Keys to Wealth report — ' + esc(S.name) + "</h3>" +
+      "<p>You scored <b>" + tot + " of " + max + "</b> points.</p>" +
+      '<div class="kw-grades">' + grades + "</div>" +
+      '<div class="kw-h3">Rent vs. buy: net worth over 30 years' + compareNote + "</div>" +
+      '<div class="kw-legend"><span><i class="kw-swatch" style="background:var(--kw-own)"></i>Buy: home equity after selling costs, plus savings</span><span><i class="kw-swatch" style="background:var(--kw-rent)"></i>Rent: investing the down payment and any monthly difference</span></div>' +
+      '<div class="kw-chart-wrap">' + ch.svg + '<div class="kw-tip" id="kw-tip"></div></div>' +
+      "<p>" + evenText + "</p>" +
+      '<table class="kw-table"><tr><th></th><th class="num">Renting</th><th class="num">Buying</th><th>Ahead</th></tr>' + rows + "</table>" +
+      '<p class="kw-small">The lesson: buying isn’t automatically better. It depends on the price, how long you stay, and whether you’re ready. ' +
+      "Assumptions: home values, rent, taxes, insurance, and HOA rise 3% a year; investments earn 5% a year; maintenance is 1% of the home’s value a year; " +
+      "selling costs 6%. The renter invests the cash the buyer used for the down payment and closing, and whoever pays less each month invests the difference. " +
+      (S.refi ? "The refinance from year 3 isn’t included. " : "") + "Example numbers only.</p>" +
+      lessons +
+      '<div class="kw-row left"><button type="button" class="kw-btn" data-act="again">Play again</button><button type="button" class="kw-btn-ghost" data-act="setup">Change character or city</button></div>';
+    bindChart(sim, ch);
+    focusTitle();
+  }
+
+  function bindChart(sim, ch) {
+    var svg = app.querySelector("svg.kw-chart"), tip = document.getElementById("kw-tip");
+    var cross = document.getElementById("kw-cross"), db = document.getElementById("kw-dot-b"), dr = document.getElementById("kw-dot-r");
+    function show(clientX) {
+      var r = svg.getBoundingClientRect();
+      var sx = (clientX - r.left) * ch.W / r.width;
+      var y = Math.max(0, Math.min(30, Math.round((sx - ch.L) / (ch.W - ch.L - ch.R) * 30)));
+      var p = sim.pts[y], px = ch.x(y);
+      cross.setAttribute("x1", px); cross.setAttribute("x2", px);
+      db.setAttribute("cx", px); db.setAttribute("cy", ch.yv(p.buy));
+      dr.setAttribute("cx", px); dr.setAttribute("cy", ch.yv(p.rent));
+      tip.innerHTML = "<b>" + (y === 0 ? "Start" : "Year " + y) + '</b><br><span class="kw-dot" style="background:var(--kw-own)"></span>Buy ' + money(p.buy) +
+        '<br><span class="kw-dot" style="background:var(--kw-rent)"></span>Rent ' + money(p.rent);
+      tip.style.display = "block";
+      var left = px / ch.W * r.width + 12;
+      if (left + tip.offsetWidth > r.width) left = px / ch.W * r.width - tip.offsetWidth - 12;
+      tip.style.left = left + "px";
+      tip.style.top = "30px";
+    }
+    function hide() { tip.style.display = "none"; cross.setAttribute("x1", -10); cross.setAttribute("x2", -10); db.setAttribute("cx", -10); dr.setAttribute("cx", -10); }
+    svg.addEventListener("pointermove", function (e) { show(e.clientX); });
+    svg.addEventListener("pointerdown", function (e) { show(e.clientX); });
+    svg.addEventListener("pointerleave", hide);
+  }
+
+  /* ===================================================================
+     EVENTS
+     =================================================================== */
+  var gloss = document.getElementById("kw-gloss");
+  var lastFocus = null;
+  function openGloss(key) {
+    var g = GLOSSARY[key];
+    if (!g) return;
+    lastFocus = document.activeElement;
+    document.getElementById("kw-gloss-title").textContent = g[0];
+    document.getElementById("kw-gloss-text").textContent = g[1];
+    gloss.classList.add("show");
+    document.getElementById("kw-gloss-close").focus({ preventScroll: true });
+  }
+  function closeGloss() { gloss.classList.remove("show"); if (lastFocus) lastFocus.focus({ preventScroll: true }); }
+  document.getElementById("kw-gloss-close").addEventListener("click", closeGloss);
+  gloss.addEventListener("click", function (e) { if (e.target === gloss) closeGloss(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && gloss.classList.contains("show")) closeGloss(); });
+
+  root.addEventListener("click", function (e) {
+    var t = e.target.closest("[data-term]");
+    if (t) { e.preventDefault(); e.stopPropagation(); openGloss(t.getAttribute("data-term")); return; }
+    var b = e.target.closest("[data-act],[data-set]");
+    if (!b || !app.contains(b)) return;
+    if (b.hasAttribute("data-set")) { setup[b.getAttribute("data-set")] = b.getAttribute("data-v"); renderSetup(); var again = app.querySelector('[data-set="' + b.getAttribute("data-set") + '"][data-v="' + b.getAttribute("data-v") + '"]'); if (again) again.focus({ preventScroll: true }); return; }
+    var act = b.getAttribute("data-act");
+    if (act === "start" || act === "again") { newGame(); renderStep(); }
+    else if (act === "setup") { renderSetup(); focusTitle(); }
+    else if (act === "pick") pick(+b.getAttribute("data-i"));
+    else if (act === "multi") checkMulti();
+    else if (act === "next") next();
+    else if (act === "info") { var st = S.steps[S.idx]; if (st.onInfo) st.onInfo(); next(); }
+  });
+
+  window.kwCloseGloss = function () {
+    if (!gloss.classList.contains("show")) return false;
+    closeGloss();
+    return true;
+  };
+
+  renderSetup();
+})();
+</script>
+<script>
+(function () {
+  "use strict";
+  // Intro splash
+  var splash = document.getElementById("app-splash");
+  setTimeout(function () {
+    splash.classList.add("out");
+    setTimeout(function () { if (splash.parentNode) splash.parentNode.removeChild(splash); }, 500);
+  }, 1300);
+
+  // Sheets
+  var scrim = document.getElementById("scrim");
+  function openSheetEl() { return document.querySelector(".sheet.open"); }
+  function closeSheets() {
+    Array.prototype.forEach.call(document.querySelectorAll(".sheet.open"), function (s) { s.classList.remove("open"); });
+    scrim.classList.remove("open");
+  }
+  function openSheet(id) {
+    closeSheets();
+    var s = document.getElementById(id);
+    if (!s) return;
+    s.classList.add("open");
+    scrim.classList.add("open");
+  }
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest ? e.target.closest("[data-sheet],[data-close]") : null;
+    if (t && t.hasAttribute("data-sheet")) { openSheet(t.getAttribute("data-sheet")); return; }
+    if (t && t.hasAttribute("data-close")) { closeSheets(); return; }
+    if (e.target === scrim) closeSheets();
+  });
+
+  // Android back button (called by MainActivity). Returns true when handled;
+  // false lets the app ask before exiting.
+  window.onAndroidBack = function () {
+    if (window.kwCloseGloss && window.kwCloseGloss()) return true;
+    if (openSheetEl()) { closeSheets(); return true; }
+    return false;
+  };
+})();
+</script>
+</body>
+</html>
