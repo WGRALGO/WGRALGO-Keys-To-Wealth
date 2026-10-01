@@ -412,7 +412,12 @@
   /* Setup hero: big logo, shown only on the setup screen */
   .app-hero { display: none; text-align: center; margin: 4px 0 18px; }
   #wgra-kw.is-setup .app-hero { display: block; }
-  .app-hero img { width: min(64vw, 260px); height: min(64vw, 260px); }
+  .app-hero img { width: min(64vw, 260px, 34vh); height: min(64vw, 260px, 34vh); }
+  /* Landscape phones: keep the logo small so the game starts on screen */
+  @media (orientation: landscape) and (max-height: 560px) {
+    .app-hero { margin-bottom: 10px; }
+    .app-hero p { margin-top: 6px; font-size: 15px; }
+  }
   .app-hero p { margin: 10px auto 0; max-width: 560px; font-size: 16px; line-height: 1.5; color: #f5e4b3; }
 
   /* Bottom sheets: menu, tips, help, about, privacy, credits */
@@ -516,7 +521,7 @@
   <h3>About</h3>
   <p>Keys to Wealth™: Rent It or Own It is a free housing and wealth game from WGRALGO / The Wealth Gap Resolution Algorithm™ Inc. Rent an apartment, buy a home, or try both, then see how your choices add up over 30 years.</p>
   <p class="muted">For education only — not financial or legal advice. All numbers are examples; real rates, prices, taxes, insurance, and laws vary by place and change over time.</p>
-  <p class="muted">Keys to Wealth v1.0.1</p>
+  <p class="muted">Keys to Wealth v2.0.0</p>
   <button type="button" class="sheet-close" data-close>Close</button>
 </div>
 
