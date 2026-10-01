@@ -1,6 +1,6 @@
 # Privacy
 
-**Keys to Wealth™: Rent It or Own It — Version 1.0.0**
+**Keys to Wealth™: Rent It or Own It — Version 1.0.1**
 
 Keys to Wealth works fully offline.
 
